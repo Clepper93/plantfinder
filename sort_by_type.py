@@ -1,12 +1,14 @@
 class Veg:
-    def __init__(self,vegtype,name,zone_lower,zone_upper,climate_tolerance="any"):
+    def __init__(self,vegtype,name,zone_lower,zone_upper,climate):
         self.vegtype = vegtype
         self.name = name
         self.zone_lower = zone_lower
         self.zone_upper = zone_upper
-veggielist = [Veg('roots','potato',3, 9,'dry'),Veg('shoots','chard', 2, 7,'cold'),Veg('shoots','kale', 3,8,'cold'),Veg('fruits','tomato', 4,10)]
+        self.climate = climate
+veggielist = [Veg('roots','potato',3, 9,'dry'),Veg('shoots','chard', 2, 7,'cold'),Veg('shoots','kale', 3,8,'cold'),Veg('fruits','tomato', 4,10,'any')]
 newlist= []
 secondlist = []
+thirdlist = []
 def gettypes():
     getinput = (input("Search for roots, shoots, and/or fruits. Separate with commas. \n")).lower()
     countcommas = int(getinput.count(','))
@@ -43,10 +45,9 @@ def gettypes():
         print(veg.name)
    
 gettypes()
-
 def getzone():
     zoneinput = int(input("What USDA hardiness zone do you live in? \n"))
-    for veg in veggielist:
+    for veg in newlist:
         if veg.zone_lower <= zoneinput and veg.zone_upper >= zoneinput:
             secondlist.append(veg)
     for veg in secondlist:
@@ -54,13 +55,36 @@ def getzone():
 
 getzone()
 
+
+def getclimate():
+    coldinput = str(input("cold, dry, any"))
+    if coldinput.lower() == 'cold':
+        for veg in secondlist:
+            if veg.climate == 'cold':
+                thirdlist.append(veg)
+    elif coldinput.lower() == 'dry':
+        for veg in secondlist:
+            if veg.climate == 'dry':
+                thirdlist.append(veg)
+    else:
+        for veg in secondlist:
+            thirdlist.append(veg)
+    for veg in thirdlist:
+        print(veg.name)
+        
+getclimate()
+
 def rerun():
     do_rerun = str(input("run again?")).strip()
     if do_rerun.lower() == 'y'or do_rerun.lower() == 'yes':
         del newlist[:]
         del secondlist[:]
+        del thirdlist[:]
         gettypes()
         getzone()
+        getclimate()
+        rerun()
     else:
         print("bye")
+
 rerun()
